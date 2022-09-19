@@ -14,7 +14,6 @@ class fzsubtk():
     select_to    = 0
     grid_step    = 0
     timing_as_ticks = False
-    timing_num_as_ticks = False
     keep_all_ticks = False
 
     _sub_data = []
@@ -23,8 +22,7 @@ class fzsubtk():
     _xx=[0]
     _yy=[0]
     _tt=[0]
-    _tl1=['']
-    _tl2=['']
+    _tl=['']
 
     # === Load .sub file
     def LoadSubFile(self, filename):
@@ -79,8 +77,8 @@ class fzsubtk():
                 #print("cnt:{:6} - val:{:6} - x:{:6}".format(cnt, val, x))
                 self._xx.append(x)
                 self._tt.append(x)
-                self._tl1.append(cnt)
-                self._tl2.append(abs(val))
+                #self._tl.append(cnt)
+                self._tl.append("({})\n{}".format(cnt, abs(val)))
                 if val > 0:
                     self._yy.append(1)
                 else:
@@ -93,14 +91,13 @@ class fzsubtk():
 
         # Keep only some of the ticks (i do not like this, TODO: rewrite)
         if not self.keep_all_ticks:
-            tick_step = int(len(self._tl1) / 25)
+            tick_step = int(len(self._tl) / 25)
             if tick_step == 0:
                 tick_step = 1
-            for cnt, val in reversed(list(enumerate(self._tl1[:-1]))):
+            for cnt, val in reversed(list(enumerate(self._tl[:-1]))):
                 if (cnt % tick_step) != 0:
                     del self._tt[cnt]
-                    del self._tl1[cnt]
-                    del self._tl2[cnt]
+                    del self._tl[cnt]
 
         # Plot
         fig = plt.figure()
@@ -120,11 +117,7 @@ class fzsubtk():
         # Use timing as ticks
         if self.timing_as_ticks:
             ax.set_xticks(self._tt)
-            ax.set_xticklabels(self._tl2)
-        # Use timing num as ticks
-        if self.timing_num_as_ticks:
-            ax.set_xticks(self._tt)
-            ax.set_xticklabels(self._tl1)
+            ax.set_xticklabels(self._tl)
 
         # Some plt config
         plt.tight_layout()
@@ -178,12 +171,6 @@ if __name__ == '__main__':
         default=False,
         help="use timing for x axis ticks")
 
-    parser.add_argument('-n', '--timing-num-as-ticks',
-        required=False,
-        action='store_true',
-        default=False,
-        help="use timing number for x axis ticks")
-
     parser.add_argument('-k', '--keep-all-ticks',
         required=False,
         action='store_true',
@@ -218,7 +205,6 @@ if __name__ == '__main__':
     subtk.select_to = args.select_to
     subtk.grid_step = args.grid_step
     subtk.timing_as_ticks = args.timing_as_ticks
-    subtk.timing_num_as_ticks = args.timing_num_as_ticks
     subtk.keep_all_ticks = args.keep_all_ticks
     subtk.output = args.output
 

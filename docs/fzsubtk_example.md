@@ -8,19 +8,17 @@ Do a first plot just to see what we have captured with: `python3 fzsubtk.py --su
 
 When plotting you get some info in the shell, one of this can be usefull: `Total time` it's the total duration of the selected plotted piece.
 
-The plot is interesting, I want to see better one of the 3 big blue rectangles... let's add the option `--timing-num-as-ticks` to see the timing position inside the .sub file, so we can select what we need to plot: `python3 fzsubtk.py --subfile=RAW_1.sub --timing-num-as-ticks`
+The plot is interesting, I want to see better one of the 3 big blue rectangles... let's add the option `--timing-num-as-ticks` to see the timing position inside the .sub file, so we can select what we need to plot: `python3 fzsubtk.py --subfile=RAW_1.sub --timing-as-ticks`
 
 ![fzsubtk_02.png](fzsubtk_02.png)
 
-ok, the interesting data is from timing 71 to 95 *(I made a few attempt to find the good range, try plotting different range a see the result)*, so let's plot only that range with: `python3 fzsubtk.py --subfile=RAW_1.sub --timing-num-as-ticks --select-from=71 --select-to=95`
+ok, the interesting data is from timing 71 to 95 *(with a little zooming I can see the tick numbers, those in brakets indicates the position)*, so let's plot only that range with: `python3 fzsubtk.py --subfile=RAW_1.sub --timing-as-ticks --select-from=71 --select-to=95`
 
 ![fzsubtk_03.png](fzsubtk_03.png)
 
-Wow data seems interesting but now I want to see the timing of each pulse, so let's change one of the params: `python3 fzsubtk.py --subfile=RAW_1.sub --timing-as-ticks --select-from=71 --select-to=95`
+Wow data seems interesting, I can use the timing of each pulse (those tick numbers on the second line) to make a beeter analysis to understand the protocol.
 
-![fzsubtk_04.png](fzsubtk_04.png)
 
-With timing on the bar I can make some better analysis trying to understand the protocol.
 
 The last feature I needed was the ability to use a fixed grid so let's try it: `python3 fzsubtk.py --subfile=RAW_1.sub --select-from=71 --select-to=95 --grid-step=579`
 
@@ -42,7 +40,7 @@ As you can see now the grid is almost perfect and the data bits are clearly read
 
 One last word... 
 
-With fzsubtk.py you can also cut part of the .sub file and create a new .sub file with the cutted part. It may be usefull to isolate some part af the same part to make comparision or to run only part of it with your Flipperzero.
+With fzsubtk.py you can also cut part of the .sub file and create a new .sub file with the cutted part. It may be usefull to isolate some part af the same file to make comparision or to run only part of it with your Flipperzero.
 
 To **cut** a .sub file you need only to select the range and the name of the output:
 
